@@ -42,6 +42,20 @@ pointButton.addEventListener('click', () => {
     screen.textContent += '.'
 })
 
+equalsButton.addEventListener('click', () => {
+    const currentScreen = screen.textContent.replace(/\s/g, '');
+    const parts = currentScreen.split(/([+\-*/])/);
+    if (parts.length === 3) {
+        const [num1, op, num2] = parts;
+        firstOperand = num1;
+        secondOperand = num2;
+        operator = op;
+        operate(operator, firstOperand, secondOperand);
+    } else {
+        return;
+    }
+})
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -59,23 +73,32 @@ function divide(num1, num2) {
 }
 
 function operate(operator, num1, num2) {
+    let result;
     num1 = Number(num1);
     num2 = Number(num2);
-    if (b === 0) {
-        return alert('Divide by zero')
-    }
-    else if (operator === '+') {
-        return add(num1, num2);
-    }
-    else if (operator === '-') {
-        return subtract(num1, num2)
-    }
-    else if (operator === '*') {
-        return multiply(num1, num2)
-    }
-    else if (operator === '/') {
-        return divide(num1, num2)
-    }
+    switch(operator) {
+        case '+':
+            result = add(num1, num2);
+            break;
+        case '-':
+            result = subtract(num1, num2);
+            break;
+        case '*':
+            result = multiply(num1, num2);
+            break;
+        case '/':
+            if (num2 === 0) {
+                alert('Divide by zero.')
+            }
+            else {
+                result = divide(num1, num2);
+            }
+            break;
+        }
+    screen.textContent = result;                
+    firstOperand = result;
+    secondOperand = '';
+    operator = '';
 }
 
 function appendNumber(number) {
@@ -87,7 +110,9 @@ function appendNumber(number) {
 }
 
 function appendSymbol(symbol) {
-    if (screen.textContent.includes(symbol)) {
+    const operators = ['+', '-', '*', '/']
+    const lastChar = screen.textContent.trim().at(-1);
+    if (operators.includes(lastChar)) {
       return;
     } else {
     screen.textContent += ` ${symbol} `;
