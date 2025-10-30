@@ -72,6 +72,10 @@ function divide(num1, num2) {
     return num1 / num2;
 }
 
+function roundResult(number) {
+    return Math.round(number * 100) / 100;
+}
+
 function operate(operator, num1, num2) {
     let result;
     num1 = Number(num1);
@@ -95,7 +99,7 @@ function operate(operator, num1, num2) {
             }
             break;
         }
-    screen.textContent = result;                
+    screen.textContent = roundResult(result);                
     firstOperand = result;
     secondOperand = '';
     operator = '';
